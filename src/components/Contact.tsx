@@ -1,6 +1,50 @@
 import { MapPin, Phone, Clock, Mail } from "lucide-react";
+import { useState, useEffect } from "react";
+
+const horariosAgrupados = [
+  { dia: "Segunda a Quinta", horas: "07:30 ás 11:30 | 12:42 ás 17:00" },
+  { dia: "Sexta-feira", horas: "07:30 ás 11:30 | 12:42 ás 16:00" },
+  { dia: "Sábado e Domingo", horas: "Fechado" },
+];
 
 const Contact = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<{ type: 'success' | 'error', message: string } | null>(null);
+
+  useEffect(() => {
+    const checkStatus = () => {
+      const now = new Date();
+      // Convert to Brasilia Timezone
+      const brTime = new Date(now.toLocaleString("en-US", { timeZone: "America/Sao_Paulo" }));
+      const day = brTime.getDay(); // 0 = Sunday, 1 = Monday, ..., 5 = Friday, 6 = Saturday
+      const timeInMinutes = brTime.getHours() * 60 + brTime.getMinutes();
+
+      let open = false;
+
+      // Monday to Friday
+      if (day >= 1 && day <= 5) {
+        // Morning: 07:30 (450) to 11:30 (690)
+        const isMorningOpen = timeInMinutes >= 450 && timeInMinutes < 690;
+
+        // Afternoon: 12:42 (762) to either 17:00 (1020) for Mon-Thu, or 16:00 (960) for Fri
+        const afternoonClose = day === 5 ? 960 : 1020;
+        const isAfternoonOpen = timeInMinutes >= 762 && timeInMinutes < afternoonClose;
+
+        if (isMorningOpen || isAfternoonOpen) {
+          open = true;
+        }
+      }
+
+      setIsOpen(open);
+    };
+
+    checkStatus();
+    // Update every minute to keep it real-time
+    const interval = setInterval(checkStatus, 60000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <section id="contato" className="section-padding bg-muted/30">
       <div className="section-container">
@@ -13,8 +57,8 @@ const Contact = () => {
             Entre em <span className="text-primary">Contato</span>
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Estamos prontos para atender suas necessidades. Solicite um orçamento 
-            ou tire suas dúvidas com nossa equipe.
+            Estamos prontos para atender suas necessidades. Solicite um orçamento
+            ou tire suas dúvidas.
           </p>
         </div>
 
@@ -43,26 +87,62 @@ const Contact = () => {
               </div>
               <div>
                 <h3 className="font-bold text-foreground mb-1">Telefone</h3>
-                <a 
-                  href="tel:+5517992176868" 
+                <a
+                  href="tel:+5517997726171"
                   className="text-muted-foreground hover:text-primary transition-colors"
                 >
-                  (17) 99217-6868
+                  (17) 99772-6171
                 </a>
               </div>
             </div>
 
-            {/* Hours */}
+            {/* Card de Horários */}
             <div className="card-industrial p-6 flex items-start gap-4">
               <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
                 <Clock className="w-6 h-6 text-primary" />
               </div>
-              <div>
-                <h3 className="font-bold text-foreground mb-1">Horário de Funcionamento</h3>
-                <p className="text-muted-foreground">
-                  Segunda a Sexta<br />
-                  <span className="text-primary font-medium">Aberto até às 17:30</span>
-                </p>
+              <div className="flex-1">
+                <h3 className="font-bold text-foreground mb-4">Horário de Funcionamento</h3>
+
+                <div className="space-y-3 w-full text-sm">
+                  {horariosAgrupados.map((item, index) => (
+                    <div key={index} className="flex items-center group">
+                      {/* Nome do Dia */}
+                      <span className="text-muted-foreground whitespace-nowrap">
+                        {item.dia}
+                      </span>
+
+                      {/* Linha guia sutil (opcional, mas ajuda muito no visual) */}
+                      <div className="mx-2 flex-grow border-b border-dotted border-muted/30 mb-1"></div>
+
+                      {/* Horários */}
+                      <span className={`
+              whitespace-nowrap font-medium
+              ${item.horas === "Fechado" ? "text-muted-foreground/60 italic" : "text-foreground"}
+            `}>
+                        {item.horas}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Indicador de Status Real-time */}
+                {isOpen ? (
+                  <div className="mt-4 pt-4 border-t border-muted/20 flex items-center gap-2 animate-fade-in">
+                    <span className="relative flex h-2 w-2">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                    </span>
+                    <span className="text-xs font-medium text-green-600 uppercase tracking-wider">Aberto Agora</span>
+                  </div>
+                ) : (
+                  <div className="mt-4 pt-4 border-t border-muted/20 flex items-center gap-2 animate-fade-in">
+                    <span className="relative flex h-2 w-2">
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500/80"></span>
+                    </span>
+                    <span className="text-xs font-medium text-red-600/80 uppercase tracking-wider">Fechado no Momento</span>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -73,22 +153,54 @@ const Contact = () => {
               </div>
               <div>
                 <h3 className="font-bold text-foreground mb-1">E-mail</h3>
-                <a 
-                  href="mailto:contato@hidroconex.com.br" 
+                <a
+                  href="mailto:hidroconex@terra.com.br"
                   className="text-muted-foreground hover:text-primary transition-colors"
                 >
-                  contato@hidroconex.com.br
+                  hidroconex@terra.com.br
                 </a>
               </div>
             </div>
           </div>
 
           {/* Contact Form */}
-          <div className="card-industrial p-8">
+          <div className="card-industrial p-8 relative">
             <h3 className="text-xl font-bold text-foreground mb-6">
               Solicite um Orçamento
             </h3>
-            <form className="space-y-5">
+
+            <form
+              className="space-y-5"
+              onSubmit={async (e) => {
+                e.preventDefault();
+                setIsSubmitting(true);
+                setSubmitStatus(null);
+
+                const formData = new FormData(e.currentTarget);
+                // Required by Web3Forms
+                formData.append("access_key", import.meta.env.VITE_WEB3FORMS_ACCESS_KEY || "");
+
+                try {
+                  const res = await fetch("https://api.web3forms.com/submit", {
+                    method: "POST",
+                    body: formData
+                  });
+
+                  const data = await res.json();
+
+                  if (data.success) {
+                    setSubmitStatus({ type: 'success', message: 'Sua solicitação foi enviada com sucesso! Entraremos em contato em breve.' });
+                    (e.target as HTMLFormElement).reset();
+                  } else {
+                    setSubmitStatus({ type: 'error', message: 'Ocorreu um erro ao enviar. Por favor, tente novamente ou contate-nos por WhatsApp.' });
+                  }
+                } catch (error) {
+                  setSubmitStatus({ type: 'error', message: 'Erro de conexão. Verifique sua internet e tente novamente.' });
+                } finally {
+                  setIsSubmitting(false);
+                }
+              }}
+            >
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-foreground mb-2">
                   Nome Completo
@@ -96,8 +208,11 @@ const Contact = () => {
                 <input
                   type="text"
                   id="name"
+                  name="name"
+                  required
                   className="w-full px-4 py-3 rounded-md border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
                   placeholder="Seu nome"
+                  disabled={isSubmitting}
                 />
               </div>
               <div>
@@ -107,8 +222,10 @@ const Contact = () => {
                 <input
                   type="email"
                   id="email"
+                  name="email"
                   className="w-full px-4 py-3 rounded-md border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
                   placeholder="seu@email.com"
+                  disabled={isSubmitting}
                 />
               </div>
               <div>
@@ -118,8 +235,11 @@ const Contact = () => {
                 <input
                   type="tel"
                   id="phone"
+                  name="phone"
+                  required
                   className="w-full px-4 py-3 rounded-md border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
                   placeholder="(00) 00000-0000"
+                  disabled={isSubmitting}
                 />
               </div>
               <div>
@@ -128,16 +248,37 @@ const Contact = () => {
                 </label>
                 <textarea
                   id="message"
+                  name="message"
+                  required
                   rows={4}
                   className="w-full px-4 py-3 rounded-md border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all resize-none"
                   placeholder="Descreva o que você precisa..."
+                  disabled={isSubmitting}
                 />
               </div>
+
+              {submitStatus && (
+                <div className={`p-4 rounded-md text-sm font-medium animate-fade-in ${submitStatus.type === 'success' ? 'bg-green-100 text-green-800 border border-green-200' : 'bg-red-100 text-red-800 border border-red-200'
+                  }`}>
+                  {submitStatus.message}
+                </div>
+              )}
+
+              <div className="h-captcha" data-captcha="true"></div>
+
               <button
                 type="submit"
-                className="w-full btn-hero py-4"
+                disabled={isSubmitting}
+                className="w-full btn-hero py-4 flex justify-center items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed transition-all"
               >
-                Enviar Solicitação
+                {isSubmitting ? (
+                  <>
+                    <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+                    Enviando...
+                  </>
+                ) : (
+                  "Enviar Solicitação"
+                )}
               </button>
             </form>
           </div>

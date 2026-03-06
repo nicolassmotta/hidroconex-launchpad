@@ -18,25 +18,25 @@ const About = () => {
               Sobre Nós
             </span>
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6">
-              Tradição e <span className="text-primary">Inovação</span> na 
+              Tradição e <span className="text-primary">Inovação</span> na
               Fabricação Industrial
             </h2>
-            
+
             <div className="space-y-4 text-muted-foreground leading-relaxed">
               <p>
-                A <strong className="text-foreground">Hidroconex Indústria e Comércio Ltda</strong> é 
-                uma fabricante estabelecida na Região Administrativa de São José do Rio Preto, 
-                especializada na produção de componentes industriais de alta precisão.
+                A <strong className="text-foreground">Hidroconex Indústria e Comércio Ltda</strong> é
+                uma fabricante estabelecida na Região de São José do Rio Preto há 14 anos,
+                especializada na produção de componentes industriais.
               </p>
               <p>
-                Com uma equipe técnica qualificada e equipamentos modernos, 
-                desenvolvemos soluções que atendem às mais rigorosas especificações 
-                do mercado industrial. Nossa missão é fornecer produtos que garantam 
+                Com uma equipe técnica qualificada e equipamentos modernos,
+                desenvolvemos soluções que atendem às mais rigorosas especificações
+                do mercado industrial. Nossa missão é fornecer produtos que garantam
                 a segurança e eficiência das operações de nossos clientes.
               </p>
               <p>
-                Cada peça fabricada pela Hidroconex passa por rigoroso controle de 
-                qualidade, assegurando que nossos clientes recebam produtos com a 
+                Cada peça fabricada pela Hidroconex passa por controle de qualidade,
+                assegurando que nossos clientes recebam produtos com a
                 durabilidade e performance que o setor industrial exige.
               </p>
             </div>

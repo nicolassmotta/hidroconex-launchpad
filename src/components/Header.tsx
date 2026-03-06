@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
-import logo from "@/assets/logo-hidroconex.jpeg";
+import logo from "@/assets/Logo/logo-hidroconex.jpeg";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);

@@ -1,5 +1,5 @@
 import { ArrowRight, Shield, Cog, Award } from "lucide-react";
-import heroImage from "@/assets/hero-industrial.jpg";
+import heroImage from "@/assets/AI/hero-industrial.jpg";
 
 const Hero = () => {
   return (
@@ -35,8 +35,8 @@ const Hero = () => {
 
           {/* Subtitle */}
           <p className="text-lg md:text-xl text-secondary-foreground/80 mb-10 max-w-2xl animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
-            Fabricação com precisão e qualidade para o setor industrial. 
-            Soluções robustas que movem sua indústria com excelência há anos 
+            Fabricação com precisão e qualidade para o setor industrial.
+            Soluções que movem sua indústria com qualidade há anos
             na região de São José do Rio Preto.
           </p>
 
@@ -65,7 +65,7 @@ const Hero = () => {
               </div>
               <div>
                 <p className="font-semibold text-secondary-foreground">Qualidade Garantida</p>
-                <p className="text-sm text-secondary-foreground/60">Materiais certificados</p>
+                <p className="text-sm text-secondary-foreground/60">Materiais Certificados</p>
               </div>
             </div>
             <div className="flex items-center gap-3 text-secondary-foreground/80">
@@ -74,7 +74,7 @@ const Hero = () => {
               </div>
               <div>
                 <p className="font-semibold text-secondary-foreground">Alta Precisão</p>
-                <p className="text-sm text-secondary-foreground/60">Fabricação especializada</p>
+                <p className="text-sm text-secondary-foreground/60">Fabricação Especializada</p>
               </div>
             </div>
             <div className="flex items-center gap-3 text-secondary-foreground/80">

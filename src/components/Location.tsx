@@ -11,7 +11,7 @@ const Location = () => {
             Nossa <span className="text-primary">Localização</span>
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Visite nossa fábrica em São José do Rio Preto. Estamos localizados 
+            Visite nossa fábrica em São José do Rio Preto. Estamos localizados
             no Distrito Industrial Campo Verdi, com fácil acesso.
           </p>
         </div>
